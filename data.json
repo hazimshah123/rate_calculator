@@ -1,0 +1,31 @@
+{
+    "deliveryOptions": [
+      {
+        "type": "slow",
+        "name": "Slow",
+        "charge_per_gram": 0.50,
+        "additional_charge": 0.00
+      },
+      {
+        "type": "fastest",
+        "name": "Fastest",
+        "charge_per_gram": 1.00,
+        "additional_charge": 10.00
+      }
+    
+    ],
+    "paymentModes": [
+      {
+        "type": "prepaid",
+        "name": "Prepaid",
+        "discount_percentage": 5.00
+      },
+      {
+        "type": "cashOnDelivery",
+        "name": "Cash on Delivery",
+        "discount_percentage": 0.00
+      }
+     
+    ]
+  }
+  

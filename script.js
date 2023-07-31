@@ -24,7 +24,6 @@ function calculateDeliveryCharges() {
     return;
   }
 
-  // Prepare the data to be sent in the AJAX request
   const data = {
     originPincode: originPincode,
     destinationPincode: destinationPincode,
@@ -33,30 +32,78 @@ function calculateDeliveryCharges() {
     paymentMode: paymentMode
   };
 
-  // Send AJAX POST request to the PHP backend
-  fetch("calculate_delivery_charges.php", {
+  console.log(data);
+//   // Convert the data to JSON
+//   const jsonData = JSON.stringify(data);
+
+//   // Create a new XMLHttpRequest object
+//   const xhr = new XMLHttpRequest();
+
+//   // Configure the POST request
+//   xhr.open("POST", "calculate_delivery_charges.php", true);
+//   xhr.setRequestHeader("Content-Type", "application/json");
+
+//   // Define the function to handle the response
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === XMLHttpRequest.DONE) {
+//       console.log(xhr.responseText);
+//       if (xhr.status === 200) {
+//         // Response received successfully
+//         const result = JSON.parse(xhr.responseText);
+//         handleResponse(result);
+//       } else {
+//         // Error handling for failed requests
+//         const resultElement = document.getElementById("result");
+//         resultElement.textContent = "Error: Failed to fetch data from the server.";
+//       }
+//     }
+//   };
+
+//   // Send the POST request with JSON data
+//   xhr.send(jsonData);
+// }
+
+// function handleResponse(result) {
+//   const resultElement = document.getElementById("result");
+//   if (result.error) {
+//     resultElement.textContent = `Error: ${result.error}`;
+//   } else {
+//     const deliveryCharge = parseFloat(result.deliveryCharge);
+//     resultElement.textContent = `Delivery Charges: ₹${deliveryCharge.toFixed(2)}`;
+//   }
+// }
+
+
+  // Send AJAX POST request to the backend API using the fetch API
+  fetch("https://your-backend-api-url.com/calculate_delivery_charges", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
-  .then(result => {
-    // Display the result
-    const resultElement = document.getElementById("result");
-    if (result.error) {
-      resultElement.textContent = `Error: ${result.error}`;
-    } else {
-      console.log(result);
-      const deliveryCharge = parseFloat(result.deliveryCharge);
-      resultElement.textContent = `Delivery Charges: ₹${deliveryCharge.toFixed(2)}`;
-    }
-  })
-  .catch(error => {
-    console.error("Error fetching data:", error);
-    // Display error message if there's an issue with the backend
-    const resultElement = document.getElementById("result");
-    resultElement.textContent = "Error: Failed to fetch data from the server.";
-  });
+    .then(response => {
+      // Check if the response was successful (status 200-299)
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      // Parse the response JSON data
+      return response.json();
+    })
+    .then(result => {
+      // Handle the parsed JSON response
+      const resultElement = document.getElementById("result");
+      if (result.error) {
+        resultElement.textContent = `Error: ${result.error}`;
+      } else {
+        const deliveryCharge = parseFloat(result.deliveryCharge);
+        resultElement.textContent = `Delivery Charges: ₹${deliveryCharge.toFixed(2)}`;
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      // Display error message if there's an issue with the backend
+      const resultElement = document.getElementById("result");
+      resultElement.textContent = "Error: Failed to fetch data from the server.";
+    });
 }
